@@ -8,9 +8,11 @@ common_steps: &common_steps
           sudo apt-get install -y nodejs
           mkdir -p ~/.npm-global
           npm config set prefix '~/.npm-global'
-
+    - run:
+        name: "Note OCAML_VERSION for cache"
+        command: echo $OCAML_VERSION > ../ocaml-version
     - restore_cache:
-        key: dependency-cache-{{ .Environment.OCAML_VERSION }}-{{ checksum "opam" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "opam" }}
     - run:
         name: "Initialize opam"
         command: |
