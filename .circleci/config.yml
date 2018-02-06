@@ -2,7 +2,7 @@ common_steps: &common_steps
   steps:
     - checkout
     - restore_cache:
-        key: dependency-cache-{{ checksum "opam" }}
+        key: dependency-cache-{{ .Environment.OCAML_VERSION }}-{{ checksum "opam" }}
     - run:
         name: "Initialize opam"
         command: |
@@ -10,7 +10,7 @@ common_steps: &common_steps
           opam remote add ocamlorg https://opam.ocaml.org -p 0 || true
           opam remote remove default || true
     - save_cache:
-        key: dependency-cache-{{ checksum "opam" }}
+        key: dependency-cache-{{ .Environment.OCAML_VERSION }}-{{ checksum "opam" }}
         paths:
           - ~/.opam
     - run:
@@ -36,18 +36,21 @@ jobs:
       - image: ocaml/opam:debian-9_ocaml-4.02.3
     environment:
       - TERM: dumb
+      - OCAML_VERSION: "4.02.3"
     <<: *common_steps
   4.03.0:
     docker:
       - image: ocaml/opam:debian-9_ocaml-4.03.0
     environment:
       - TERM: dumb
+      - OCAML_VERSION: "4.03.0"
     <<: *common_steps
   4.04.0:
     docker:
       - image: ocaml/opam:debian-9_ocaml-4.04.0
     environment:
       - TERM: dumb
+      - OCAML_VERSION: "4.04.0"
     <<: *common_steps
 
 
