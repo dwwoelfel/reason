@@ -2,11 +2,14 @@ common_steps: &common_steps
   steps:
     - checkout
     - run:
-        name: "Install ocaml deps"
+        name: "Install ocaml deps :("
         command: |
-          sudo add-apt-repository ppa:avsm/ppa
-          sudo apt-get update
-          sudo apt-get install ocaml ocaml-native-compilers camlp4-extra opam
+          sudo add-apt-repository -y ppa:avsm/ppa
+          sudo mkdir -p ~/aptcache/partial
+          sudo touch ~/aptcache/lock
+          sudo chmod 640 ~/aptcache/lock
+          sudo apt-get update -o dir::cache::archives="/home/opam/aptcache" -y
+          sudo apt-get install -o dir::cache::archives="/home/opam/aptcache" -y ocaml ocaml-native-compilers opam
 
     - run:
         name: "Install npm"
