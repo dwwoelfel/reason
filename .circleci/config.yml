@@ -4,8 +4,11 @@ common_steps: &common_steps
     - run:
         name: "Install npm"
         command: |
-          curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+          curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
           sudo apt-get install -y nodejs
+          mkdir -p ~/.npm-global
+          npm config set prefix '~/.npm-global'
+
     - restore_cache:
         key: dependency-cache-{{ .Environment.OCAML_VERSION }}-{{ checksum "opam" }}
     - run:
@@ -48,6 +51,7 @@ jobs:
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.02.3"
+      - NPM_CONFIG_PREFIX: "~/.npm-global"
     <<: *common_steps
   4.03.0:
     docker:
@@ -55,6 +59,7 @@ jobs:
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.03.0"
+      - NPM_CONFIG_PREFIX: "~/.npm-global"
     <<: *common_steps
   4.04.0:
     docker:
@@ -62,6 +67,7 @@ jobs:
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.04.0"
+      - NPM_CONFIG_PREFIX: "~/.npm-global"
     <<: *common_steps
 
 
