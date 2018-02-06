@@ -29,6 +29,7 @@ common_steps: &common_steps
         key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "opam" }}-{{ checksum "reason-parser/opam" }}
         paths:
           - ~/.opam
+          - ~/.npm-global
     - run:
         name: 'Clean'
         command: make clean
