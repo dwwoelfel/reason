@@ -12,7 +12,7 @@ common_steps: &common_steps
         name: "Note OCAML_VERSION for cache"
         command: echo $OCAML_VERSION > ../ocaml-version
     - restore_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "opam" }}-{{ checksum "reason-parser/opam" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
     - run:
         name: "Initialize opam"
         command: |
@@ -26,7 +26,7 @@ common_steps: &common_steps
           opam install -y jbuilder
           npm install -g esy@next
     - save_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "opam" }}-{{ checksum "reason-parser/opam" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
         paths:
           - ~/.opam
           - ~/.npm-global
