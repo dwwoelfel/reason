@@ -34,17 +34,17 @@ common_steps: &common_steps
         command: |
           opam pin add -y reason .
           opam pin add -y rtop .
+    - save_cache:
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
+        paths:
+          - ~/.opam
+          - ~/.npm-global
     - run:
         name: 'Test'
         command: |
           source ~/.bash_profile
           eval `opam config env`
           make test-ci
-    - save_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
-        paths:
-          - ~/.opam
-          - ~/.npm-global
     - run:
         name: 'Check git is clean'
         command: git diff --exit-code
