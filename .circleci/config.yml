@@ -60,7 +60,7 @@ version: 2
 jobs:
   4.02.3:
     docker:
-      - image: ocaml/opam:opam:ubuntu-16.04_ocaml-4.02.3
+      - image: ocaml/opam:opam:debian-9_ocaml-4.02.3
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.02.3"
@@ -68,7 +68,7 @@ jobs:
     <<: *common_steps
   4.03.0:
     docker:
-      - image: ocaml/opam:ubuntu-16.04_ocaml-4.03.0
+      - image: ocaml/opam:debian-9_ocaml-4.03.0
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.03.0"
@@ -76,7 +76,7 @@ jobs:
     <<: *common_steps
   4.04.0:
     docker:
-      - image: ocaml/opam:ubuntu-16.04_ocaml-4.04.0
+      - image: ocaml/opam:debian-9_ocaml-4.04.0
     environment:
       - TERM: dumb
       - OCAML_VERSION: "4.04.0"
