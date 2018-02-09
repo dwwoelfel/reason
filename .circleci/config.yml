@@ -7,12 +7,12 @@ common_steps: &common_steps
           curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
           sudo apt-get install -y nodejs
           mkdir -p ~/.npm-global
-          npm config set prefix '~/.npm-global'
+          npm config set prefix $NPM_CONFIG_PREFIX
     - run:
         name: "Note OCAML_VERSION for cache"
         command: echo $OCAML_VERSION > ../ocaml-version
     - restore_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}-{{ checksum ".circleci/config.yml" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
     - run:
         name: "Initialize opam"
         command: |
@@ -26,11 +26,6 @@ common_steps: &common_steps
           opam install -y jbuilder
           opam install -y menhir.20170712
           npm install -g esy@next
-    - save_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}-{{ checksum ".circleci/config.yml" }}
-        paths:
-          - ~/.opam
-          - ~/.npm-global
     - run:
         name: 'Clean'
         command: make clean-for-ci
@@ -45,6 +40,11 @@ common_steps: &common_steps
           source ~/.bash_profile
           eval `opam config env`
           make test-ci
+    - save_cache:
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum ".circleci/config.yml" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
+        paths:
+          - ~/.opam
+          - ~/.npm-global
     - run:
         name: 'Check git is clean'
         command: git diff --exit-code
