@@ -2,13 +2,6 @@ common_steps: &common_steps
   steps:
     - checkout
     - run:
-        name: "Install ocaml deps :("
-        command: |
-          yes y | sudo add-apt-repository ppa:avsm/ppa
-          sudo apt-get update -y
-          sudo apt-get install -y ocaml ocaml-native-compilers opam
-
-    - run:
         name: "Install npm"
         command: |
           curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
