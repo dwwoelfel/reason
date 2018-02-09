@@ -12,7 +12,7 @@ common_steps: &common_steps
         name: "Note OCAML_VERSION for cache"
         command: echo $OCAML_VERSION > ../ocaml-version
     - restore_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}-{{ checksum ".circleci/config.yml" }}
     - run:
         name: "Initialize opam"
         command: |
@@ -24,23 +24,24 @@ common_steps: &common_steps
         command: |
           opam update
           opam install -y jbuilder
+          opam install -y menhir.20170712
           npm install -g esy@next
     - save_cache:
-        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}
+        key: dependency-cache-{{ checksum "../ocaml-version" }}-{{ checksum "reason.opam" }}-{{ checksum "rebuild.opam" }}-{{ checksum "rtop.opam" }}-{{ checksum ".circleci/config.yml" }}
         paths:
           - ~/.opam
           - ~/.npm-global
     - run:
         name: 'Clean'
-        command: make clean
+        command: make clean-for-ci
     - run:
         name: 'opam pin'
         command: |
-          opam pin add -y reason-parser reason-parser
           opam pin add -y reason .
+          opam pin add -y rtop .
     - run:
         name: 'Test'
-        command: make test
+        command: make test-ci
     - run:
         name: 'Check git is clean'
         command: git diff --exit-code
